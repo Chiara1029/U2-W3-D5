@@ -38,12 +38,66 @@
         </div>
       </div>
     </nav>
-    <main></main>
+    <main>
+      <div class="container-md">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <h4 class="my-4">Prodotto:</h4>
+            <div id="productDetails">
+              <!--
+                        questo template si genererà dopo la risposta del server su /agenda/[id dinamico]
+
+                        <h1>Nome Appuntamento</h1>
+                    <p>20/06/2023</p>
+                    <p>123€</p>
+                    <h6>Server Details</h6>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>_id:</strong> 12981238912398</li>
+                        <li class="list-group-item"><strong>_id:</strong> 12981238912398</li>
+                        <li class="list-group-item"><strong>_id:</strong> 12981238912398</li>
+                    </ul> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
-    <script src="./script.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get("userId");
+      console.log("RESOURCE ID: ", productId);
+
+      window.onload = () => {
+        fetch("https://striveschool-api.herokuapp.com/api/product/" + productId, {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTRkZTZiNjI1NGU4ODAwMTgzZjE4NmQiLCJpYXQiOjE2OTk2MDQxNTAsImV4cCI6MTcwMDgxMzc1MH0.es63YWr-0fQctl8wlD0piXyTXi9ZPie-h3sdTxylWCE",
+          },
+        })
+          .then((response) => response.json())
+          .then((productsObj) => {
+            const container = document.getElementById("productDetails");
+            container.innerHTML = `
+                  <h1>${productsObj.name}</h1>
+                  <p>${productsObj.description}</p>
+                  <p>${productsObj.brand}</p>
+                  <p>${productsObj.price}€</p>
+                  <img src="${productsObj.imageUrl}"/>
+                  <h6>Server Details</h6>
+                  <ul class="list-group list-group-flush">
+                      <li class="list-group-item"><strong>_id:</strong> ${productsObj._id}</li>
+                      <li class="list-group-item"><strong>createdAt:</strong> ${productsObj.createdAt}</li>
+                      <li class="list-group-item"><strong>updateAt:</strong> ${productsObj.updatedAt}</li>
+                  </ul>
+                  <button class="btn btn-success mt-4">Modifica prodotto</button>
+                  <button class="btn btn-success mt-4">Elimina prodotto</button>
+             `;
+          });
+      };
+    </script>
   </body>
 </html>

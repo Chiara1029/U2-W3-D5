@@ -17,10 +17,12 @@ window.onload = () => {
         const modBtn = document.createElement("button");
         modBtn.className = "btn btn-primary p-1 mx-3";
         modBtn.innerText = "Modifica";
+        modBtn.id = "modBtn";
 
         const delBtn = document.createElement("button");
         delBtn.className = "btn btn-danger p-1";
-        delBtn.innerHTML = "Elimina";
+        delBtn.innerText = "Elimina";
+        delBtn.id = "delBtn";
 
         productName.appendChild(modBtn);
         productName.appendChild(delBtn);

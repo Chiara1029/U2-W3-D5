@@ -40,7 +40,7 @@
     </nav>
     <main>
       <div class="row d-flex justify-content-center">
-        <div class="col-8 m-3">
+        <div class="col-4 m-3 text-center">
           <h5>Prodotti disponibili:</h5>
         </div>
       </div>
@@ -110,6 +110,17 @@
             console.log(error);
           });
       };
+
+      fetch("https://striveschool-api.herokuapp.com/api/product/", {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTRkZTZiNjI1NGU4ODAwMTgzZjE4NmQiLCJpYXQiOjE2OTk2MDQxNTAsImV4cCI6MTcwMDgxMzc1MH0.es63YWr-0fQctl8wlD0piXyTXi9ZPie-h3sdTxylWCE",
+        },
+      })
+        .then((response) => response.json())
+        .then((productsObj) => {
+          console.log(productsObj);
+        });
     </script>
   </body>
 </html>
