@@ -90,6 +90,7 @@
               const modBtn = document.createElement("button");
               modBtn.className = "btn btn-primary p-1 mx-3";
               modBtn.innerText = "Modifica";
+              modBtn.innerHTML = `<a class="text-decoration-none text-light" href="./back-office.html?productId=${product._id}">Modifica</a>`;
 
               const detailsBtn = document.createElement("button");
               detailsBtn.className = "btn btn-secondary p-1 m-3";

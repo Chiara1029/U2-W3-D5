@@ -42,8 +42,8 @@
     <main>
       <div class="row d-flex justify-content-center mt-5">
         <div class="col-4 bg-body-tertiary rounded p-4 shadow-sm">
-          <h5>Inserisci un nuovo prodotto:</h5>
-          <form onsubmit="createProduct(event)">
+          <h5>Prodotto:</h5>
+          <form onsubmit="handleProduct(event)">
             <div class="mb-3">
               <label for="name" class="form-label">Nome Prodotto</label>
               <input
@@ -99,13 +99,6 @@
               <button type="reset" class="btn btn-success">Resetta</button>
             </div>
           </form>
-        </div>
-      </div>
-      <div class="row mt-5">
-        <div class="col-md-8 mx-3">
-          <ul id="itemsList">
-            <h5>Lista Prodotti:</h5>
-          </ul>
         </div>
       </div>
     </main>

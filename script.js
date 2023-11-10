@@ -1,40 +1,34 @@
+const params = new URLSearchParams(window.location.search);
+const productId = params.get("productId");
+
+const URL = productId
+  ? "https://striveschool-api.herokuapp.com/api/product/" + productId
+  : "https://striveschool-api.herokuapp.com/api/product/";
+const method = productId ? "PUT" : "POST";
+
 window.onload = () => {
-  fetch("https://striveschool-api.herokuapp.com/api/product/", {
-    headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTRkZTZiNjI1NGU4ODAwMTgzZjE4NmQiLCJpYXQiOjE2OTk2MDQxNTAsImV4cCI6MTcwMDgxMzc1MH0.es63YWr-0fQctl8wlD0piXyTXi9ZPie-h3sdTxylWCE",
-    },
-  })
-    .then((response) => response.json())
-    .then((productsObj) => {
-      const itemsList = document.getElementById("itemsList");
-
-      productsObj.forEach((product) => {
-        let productName = document.createElement("li");
-        productName.className = "m-3";
-        productName.innerText = product.name;
-
-        const modBtn = document.createElement("button");
-        modBtn.className = "btn btn-primary p-1 mx-3";
-        modBtn.innerText = "Modifica";
-        modBtn.id = "modBtn";
-
-        const delBtn = document.createElement("button");
-        delBtn.className = "btn btn-danger p-1";
-        delBtn.innerText = "Elimina";
-        delBtn.id = "delBtn";
-
-        productName.appendChild(modBtn);
-        productName.appendChild(delBtn);
-        itemsList.appendChild(productName);
-      });
+  if (productId) {
+    fetch(URL, {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTRkZTZiNjI1NGU4ODAwMTgzZjE4NmQiLCJpYXQiOjE2OTk2MDQxNTAsImV4cCI6MTcwMDgxMzc1MH0.es63YWr-0fQctl8wlD0piXyTXi9ZPie-h3sdTxylWCE",
+      },
     })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((response) => response.json())
+      .then((product = { name, description, price, imageUrl, brand }) => {
+        document.getElementById("name").value = product.name;
+        document.getElementById("description").value = product.description;
+        document.getElementById("brand").value = product.brand;
+        document.getElementById("imageUrl").value = product.imageUrl;
+        document.getElementById("price").value = product.price;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 };
 
-const createProduct = (event) => {
+const handleProduct = (event) => {
   event.preventDefault();
   const productsObj = {
     name: document.getElementById("name").value,
@@ -43,8 +37,9 @@ const createProduct = (event) => {
     imageUrl: document.getElementById("imageUrl").value,
     price: document.getElementById("price").value,
   };
-  fetch("https://striveschool-api.herokuapp.com/api/product/", {
-    method: "POST",
+
+  fetch(URL, {
+    method,
     body: JSON.stringify(productsObj),
     headers: {
       Authorization:
@@ -53,8 +48,20 @@ const createProduct = (event) => {
     },
   })
     .then((response) => response.json())
-    .then((productsObj) => console.log(productsObj))
+    .then((productsObj) => {
+      if (productId) {
+        alert("Prodotto: " + productsObj._id + " modificato con successo!");
+      } else {
+        alert("Prodotto: " + productsObj._id + "creato con successo!");
+      }
+    })
     .catch((error) => {
       console.log(error);
     });
+  if (!productId) {
+    document.getElementById("name").value = "";
+    document.getElementById("time").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("price").value = "";
+  }
 };
