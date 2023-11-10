@@ -41,6 +41,14 @@
     <main>
       <div class="container-md">
         <div class="row justify-content-center"></div>
+        <div class="row">
+          <div class="d-flex justify-content-center mb-5">
+            <a href="./back-office.html?productId=${product._id}"
+              ><button class="btn btn-success mx-2">Modifica</button></a
+            >
+            <button class="btn btn-danger mx-2" onclick="handleDelete()">Elimina</button>
+          </div>
+        </div>
       </div>
     </main>
     <script
@@ -63,7 +71,7 @@
           },
         })
           .then((response) => response.json())
-          .then((product = { name, description, price, imageUrl, brand }) => {
+          .then((product = { name, description, price, imageUrl, brand, createdAt, updatedAt, userId }) => {
             const row = document.querySelector(".row");
             console.log(product);
 
@@ -78,10 +86,9 @@
                                   <p> <strong>Descrizione:</strong>  ${product.description}</p>
                                   <p> <strong>Brand:</strong>  ${product.brand}</p>
                                   <p> <strong>Prezzo:</strong>  ${product.price} €</p>
-                                </div>
-                                <div class="d-flex justify-content-center mb-5">
-                                  <button class="btn btn-success mx-2"> Modifica </button>
-                                  <button class="btn btn-danger mx-2" onclick="handleDelete()"> Elimina </button>
+                                  <p> <strong>Creato:</strong>  ${product.createdAt}</p>
+                                  <p> <strong>Ultima modifica:</strong>  ${product.updatedAt}</p>
+                                  <p> <strong>userId:</strong>  ${product.userId}</p>
                                 </div>
                              </div>`;
 
@@ -96,13 +103,11 @@
         const hasAccepted = confirm("Sei sicuro?");
 
         if (hasAccepted) {
-          fetch(URL, {
+          fetch("https://striveschool-api.herokuapp.com/api/product/" + productId, {
             method: "DELETE",
-            body: JSON.stringify(productObj),
             headers: {
               Authorization:
                 "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTRkZTZiNjI1NGU4ODAwMTgzZjE4NmQiLCJpYXQiOjE2OTk2MDQxNTAsImV4cCI6MTcwMDgxMzc1MH0.es63YWr-0fQctl8wlD0piXyTXi9ZPie-h3sdTxylWCE",
-              "Content-Type": "application/json",
             },
           })
             .then((response) => response.json())
