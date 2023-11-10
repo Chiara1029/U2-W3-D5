@@ -40,25 +40,7 @@
     </nav>
     <main>
       <div class="container-md">
-        <div class="row justify-content-center">
-          <div class="col-md-8">
-            <h4 class="my-4">Prodotto:</h4>
-            <div id="productDetails">
-              <!--
-                        questo template si genererà dopo la risposta del server su /agenda/[id dinamico]
-
-                        <h1>Nome Appuntamento</h1>
-                    <p>20/06/2023</p>
-                    <p>123€</p>
-                    <h6>Server Details</h6>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>_id:</strong> 12981238912398</li>
-                        <li class="list-group-item"><strong>_id:</strong> 12981238912398</li>
-                        <li class="list-group-item"><strong>_id:</strong> 12981238912398</li>
-                    </ul> -->
-            </div>
-          </div>
-        </div>
+        <div class="row justify-content-center"></div>
       </div>
     </main>
     <script
@@ -68,35 +50,65 @@
     ></script>
     <script>
       const params = new URLSearchParams(window.location.search);
-      const productId = params.get("userId");
+      const productId = params.get("_id");
       console.log("RESOURCE ID: ", productId);
 
       window.onload = () => {
-        fetch("https://striveschool-api.herokuapp.com/api/product/" + productId, {
+        fetch("https://striveschool-api.herokuapp.com/api/product/", {
+          method: "GET",
           headers: {
             Authorization:
               "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTRkZTZiNjI1NGU4ODAwMTgzZjE4NmQiLCJpYXQiOjE2OTk2MDQxNTAsImV4cCI6MTcwMDgxMzc1MH0.es63YWr-0fQctl8wlD0piXyTXi9ZPie-h3sdTxylWCE",
           },
         })
-          .then((response) => response.json())
-          .then((productsObj) => {
-            const container = document.getElementById("productDetails");
-            container.innerHTML = `
-                  <h1>${productsObj.name}</h1>
-                  <p>${productsObj.description}</p>
-                  <p>${productsObj.brand}</p>
-                  <p>${productsObj.price}€</p>
-                  <img src="${productsObj.imageUrl}"/>
-                  <h6>Server Details</h6>
-                  <ul class="list-group list-group-flush">
-                      <li class="list-group-item"><strong>_id:</strong> ${productsObj._id}</li>
-                      <li class="list-group-item"><strong>createdAt:</strong> ${productsObj.createdAt}</li>
-                      <li class="list-group-item"><strong>updateAt:</strong> ${productsObj.updatedAt}</li>
-                  </ul>
-                  <button class="btn btn-success mt-4">Modifica prodotto</button>
-                  <button class="btn btn-success mt-4">Elimina prodotto</button>
-             `;
+          .then((resp) => resp.json())
+          .then(({ productsObj }) => {
+            const row = document.querySelector(".row");
+
+            productsObj.forEach((productsObj) => {
+              const col = document.createElement("div");
+              col.className = "col-12 col-sm-6 col-md-4 col-lg-3";
+
+              col.innerHTML = `<div class="card">
+                                            <img src=${productsObj.src.imageUrl} class="card-img-top">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${productsObj.name}</h5>
+                                                <p class="card-text">${productsObj.description}</p>
+                                                <a href="./details.html?productId=${productsObj._id}" class="btn btn-primary">View Details</a>
+                                            </div>
+                                        </div>`;
+
+              row.appendChild(col);
+            });
+          })
+          .catch((err) => {
+            console.log(err);
           });
+        // fetch("https://striveschool-api.herokuapp.com/api/product/" + productId, {
+        //   headers: {
+        //     Authorization:
+        //       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTRkZTZiNjI1NGU4ODAwMTgzZjE4NmQiLCJpYXQiOjE2OTk2MDQxNTAsImV4cCI6MTcwMDgxMzc1MH0.es63YWr-0fQctl8wlD0piXyTXi9ZPie-h3sdTxylWCE",
+        //   },
+        // })
+        //   .then((response) => response.json())
+        //   .then((productsObj) => {
+        //     const container = document.getElementById("productDetails");
+        //     container.innerHTML = `
+        //           <h1>${productsObj.name}</h1>
+        //           <p>${productsObj.description}</p>
+        //           <p>${productsObj.brand}</p>
+        //           <p>${productsObj.price}€</p>
+        //           <img src="${productsObj.imageUrl}"/>
+        //           <h6>Server Details</h6>
+        //           <ul class="list-group list-group-flush">
+        //               <li class="list-group-item"><strong>_id:</strong> ${productsObj._id}</li>
+        //               <li class="list-group-item"><strong>createdAt:</strong> ${productsObj.createdAt}</li>
+        //               <li class="list-group-item"><strong>updateAt:</strong> ${productsObj.updatedAt}</li>
+        //           </ul>
+        //           <button class="btn btn-success mt-4">Modifica prodotto</button>
+        //           <button class="btn btn-success mt-4">Elimina prodotto</button>
+        //      `;
+        //   });
       };
     </script>
   </body>
