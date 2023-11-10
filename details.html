@@ -50,11 +50,11 @@
     ></script>
     <script>
       const params = new URLSearchParams(window.location.search);
-      const productId = params.get("_id");
+      const productId = params.get("productId");
       console.log("RESOURCE ID: ", productId);
 
       window.onload = () => {
-        fetch("https://striveschool-api.herokuapp.com/api/product/", {
+        fetch("https://striveschool-api.herokuapp.com/api/product/" + productId, {
           method: "GET",
           headers: {
             Authorization:
